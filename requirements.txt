@@ -1,0 +1,10 @@
+SQLalchemy
+dotenv
+psycopg2-binary
+uvicorn 
+fastapi
+passlib[argon2]
+google-genai
+requests
+pytest-mock
+python-jose
