@@ -1,30 +1,36 @@
-from fastapi import APIRouter, HTTPException
-import joblib
-import pandas as pd
-import os
+from fastapi import APIRouter, HTTPException ,Depends
+from sqlalchemy.orm import Session
 from api_app.schemas.predict_schema import PredictionRequest, PredictionResponse
-from api_app.outils.load_model import load_model
+from api_app.dependencies import get_db
+from api_app.core.security import verify_token
+from api_app.outils.get_predictions import get_prediction
+from api_app.outils.predictions_history import save_prediction_history
+from api_app.models.users import USERS
+
 
 
 
 
 router = APIRouter()
 
-MODEL_PATH = os.path.join("ml", "saved_models", "Logistic Regression.pkl")
+
 
 @router.post("/predict",response_model=PredictionResponse)
-def predict_churn(features: PredictionRequest):
-    
-    model = load_model(MODEL_PATH)
-     
-    if model is None:
-        raise HTTPException(status_code=503, detail="Le service de prédiction est indisponible (Modèle non chargé).")
+async def predict_churn(features: PredictionRequest,token = Depends(verify_token),db: Session = Depends(get_db)):
+    username = token["Username"]
     
     try:
+        # Chercher l'utilisateur en base
+        user = db.query(USERS).filter(USERS.username == username).first()
+        if not user:
+            raise HTTPException(status_code=404, detail="Utilisateur introuvable")
 
-        employee_data = pd.DataFrame([features.model_dump()])
-        probability = model.predict_proba(employee_data)[0][1] # probabilité de la classe "1" (churn)
-        probability = round(probability , 2)
+        # Récupérer l'id réel
+        userid = user.id
+        employeeid = features.employeeid
+        probability = probability = get_prediction(features)
+        save_prediction_history(db=db, userid=userid, employeeid=employeeid, probability=probability)
+        # save_prediction_history(db=db, user_id=userid, probability=probability)
 
     except ValueError as e:
         # Si les dimensions ou types sont incompatibles avec le modèle
