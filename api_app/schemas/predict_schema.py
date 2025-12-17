@@ -1,6 +1,7 @@
 from pydantic import BaseModel,Field
 
 class PredictionRequest(BaseModel):
+    employeeid: int = Field(..., example=123)
     Age: int = Field(..., example=41)
     Gender: str = Field(..., example="Female")
     MaritalStatus: str = Field(..., example="Single")
