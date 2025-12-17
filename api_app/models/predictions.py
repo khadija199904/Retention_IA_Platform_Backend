@@ -1,4 +1,4 @@
-predictions_history
+
 from sqlalchemy import Column,Integer,String ,DateTime,ForeignKey,func ,Float
 from sqlalchemy.orm import relationship
 from api_app.database import Base
