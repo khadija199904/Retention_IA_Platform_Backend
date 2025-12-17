@@ -8,6 +8,8 @@ from sklearn.metrics import accuracy_score ,f1_score
 import mlflow
 import joblib
 import os
+from imblearn.over_sampling import SMOTE
+from imblearn.pipeline import Pipeline as ImbPipeline
 
 import os
 
@@ -54,14 +56,15 @@ name_model = ""
 for name, model in models.items():
    
  
-    pipe_clf = Pipeline(steps=[
+    pipe_clf = ImbPipeline(steps=[
     ('preprocessor', preprocessor),
+    ('smote', SMOTE(random_state=42)),
     ('classifier', model)
       ])
      # Entrainnement 
     pipe_clf.fit(X_train, y_train)
     with mlflow.start_run(run_name=name):
-        mlflow.set_tag("run_description", "Garder toutes les colonnes et entraîner avec paramètres par défaut")
+        mlflow.set_tag("run_description", "Garder toutes les colonnes et entraîner avec paramètres par défaut+ SMOTE")
         # Prediction
         y_pred = pipe_clf.predict(X_test)
         y_prob = pipe_clf.predict_proba(X_test)[:,1]
