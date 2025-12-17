@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine,text
 from sqlalchemy.orm import sessionmaker,declarative_base
 from .core.config import USER,PASSWORD,HOST,PORT,DB
 
@@ -30,4 +30,13 @@ if __name__ == "__main__":
 
      print(" Test de connexion à la base de données...")
      print(f"DB: {DB} | User: {USER} | Host: {HOST}:{PORT}")
+     try:
+        with engine.connect() as conn:
+            conn.execute(text("SELECT 1"))
+            print(" Connexion réussie à la base de données !")
+            print("DB_URL:", DB_URL)
+
+
+     except Exception as e:
+        print(" Échec de la connexion :", e)
      
