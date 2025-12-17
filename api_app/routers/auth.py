@@ -25,6 +25,11 @@ async def Register(user : UserRegister ,db: Session = Depends(get_db)) :
    db.add(new_user)
    db.commit()
    db.refresh(new_user)
+   user_in_db = db.query(USERS).filter(USERS.username == user.username).first()
+   if user_in_db:
+      print("Utilisateur confirmé dans la base :", user_in_db.username)
+   else:
+        print("Erreur : l'utilisateur n'a pas été ajouté")
    return {"message": "Compte créé avec succès", "username": new_user.username}
 
 
