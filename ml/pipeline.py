@@ -1,4 +1,4 @@
-from Fonctions import load_data,clean_data,split_data,Matrice_confusion,ROC_curve,Classification_Report
+from ml.Fonctions import load_data,clean_data,split_data,Matrice_confusion,ROC_curve,Classification_Report
 from sklearn.compose import ColumnTransformer
 from sklearn.preprocessing import StandardScaler, OneHotEncoder
 from sklearn.linear_model import LogisticRegression
