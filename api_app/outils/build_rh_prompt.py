@@ -1,6 +1,6 @@
-from ..schemas.predict_schema import PredictionRequest
+from ..schemas.employe_schema import EmployeeData
 
-def build_rh_prompt(data: PredictionRequest, churn_probability: float) :
+def build_rh_prompt(data: EmployeeData, churn_probability: float) :
     # On construit le prompt avec une f-string
     satisfaction_ref = {1: "Faible (Low)", 2: "Moyen (Medium)", 3: "Élevé (High)", 4: "Très Élevé (Very High)"}
     wlb_map = {1: "Mauvais (Bad)", 2: "Bon (Good)", 3: "Meilleur (Better)", 4: "Excellent (Best)"}
@@ -34,7 +34,8 @@ CONTEXTE FINANCIER & CARRIÈRE :
 
 Contexte : ce salarié a un risque élevé de (Churn Probability : {churn_probability}%) de départ selon le modèle ML.
 
-Tache : propose 3 actions concrètes et personnalisées pour le retenir dans l entreprise, en tenant compte de son role, sa satisfaction, sa performance et son équilibre vie professionnelle/personnelle.
+Tache :  propose **exactement 3 actions RH très courtes**, **1 phrase maximum chacune**, **directes et opérationnelles** pour le retenir. 
+Ne fais **aucune explication ou justification**, pour le retenir dans l entreprise, en tenant compte de son role, sa satisfaction, sa performance et son équilibre vie professionnelle/personnelle.
 Rédige les actions de façon claire et opérationnelle pour un manager RH. Réponds uniquement avec le plan d'action au format JSON (liste de chaines de caractères).
 """
     return prompt

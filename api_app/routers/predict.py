@@ -1,6 +1,7 @@
 from fastapi import APIRouter, HTTPException ,Depends
 from sqlalchemy.orm import Session
-from api_app.schemas.predict_schema import PredictionRequest, PredictionResponse
+from api_app.schemas.predict_schema import  PredictionResponse
+from api_app.schemas.employe_schema import EmployeeData
 from api_app.dependencies import get_db
 from api_app.core.security import verify_token
 from api_app.outils.get_predictions import get_prediction
@@ -16,7 +17,7 @@ router = APIRouter()
 
 
 @router.post("/predict",response_model=PredictionResponse)
-async def predict_churn(features: PredictionRequest,token = Depends(verify_token),db: Session = Depends(get_db)):
+async def predict_churn(features: EmployeeData,token = Depends(verify_token),db: Session = Depends(get_db)):
     username = token["Username"]
     
     try:
@@ -30,7 +31,7 @@ async def predict_churn(features: PredictionRequest,token = Depends(verify_token
         employeeid = features.employeeid
         probability = get_prediction(features)
         save_prediction_history(db=db, userid=userid, employeeid=employeeid, probability=probability)
-        # save_prediction_history(db=db, user_id=userid, probability=probability)
+        
 
     except ValueError as e:
         # Si les dimensions ou types sont incompatibles avec le modèle

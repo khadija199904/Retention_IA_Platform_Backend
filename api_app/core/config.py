@@ -13,4 +13,4 @@ HF_API_TOKEN = os.getenv("HUGGINGFACE_API_TOKEN")
  # Configuration de JWT
 SECRET_KEY = os.getenv("SECRET_KEY")
 
-# GEMINI_API_KEY = os.getenv("GEMINI_API_KE")
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
