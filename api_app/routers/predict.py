@@ -28,7 +28,7 @@ async def predict_churn(features: PredictionRequest,token = Depends(verify_token
         # Récupérer l'id réel
         userid = user.id
         employeeid = features.employeeid
-        probability = probability = get_prediction(features)
+        probability = get_prediction(features)
         save_prediction_history(db=db, userid=userid, employeeid=employeeid, probability=probability)
         # save_prediction_history(db=db, user_id=userid, probability=probability)
 

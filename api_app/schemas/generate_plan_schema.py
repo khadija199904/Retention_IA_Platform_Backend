@@ -1,11 +1,12 @@
-from pydantic import BaseModel ,List
+from pydantic import BaseModel 
+from typing import List
 
 
-class generateRequest(BaseModel):
+class RetentionPlanRequest(BaseModel):
     churn_probability : float
     prompt : str 
 
-class generateResponse(BaseModel):
+class RetentionPlan(BaseModel):
     retention_plan: List[str]
 
 

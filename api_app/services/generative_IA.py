@@ -1,40 +1,44 @@
 import os
-import requests
+
+from openai import OpenAI
 from ..core.config import HF_API_TOKEN
-from ..outils.generate_rh_prompt import generate_hr_prompt
+
+import os
+from openai import OpenAI
+from ..schemas.generate_plan_schema import RetentionPlan
+
 
 
 if not HF_API_TOKEN:
     raise ValueError("La clé d'API Hugging Face n'est pas définie. Veuillez la mettre dans le fichier .env")
-headers = {"Authorization": f"Bearer {HF_API_TOKEN}"}
 
-
-API_URL = "https://router.huggingface.co/v1/chat/completions"
-
-
-
+client = OpenAI(
+    base_url="https://router.huggingface.co/v1",
+    api_key= HF_API_TOKEN,
+)
 
 
 
-def generate(features,churn_proba):
+def generate_retention_plan(prompt):
 
-    prompt_RH = generate_hr_prompt(features,churn_proba)
-
-    # payload= { 
-    #     "ch" : 
-    # }
+        
+   
+        completion = client.chat.completions.parse(
+            model="meta-llama/Llama-3.1-8B-Instruct:novita",
+            messages=[
+                {"role": "system", 
+                 "content": "TRéponds UNIQUEMENT en JSON avec la clé 'retention_plan' (liste de chaînes)."
+                 },
+                {"role": "user","content": prompt}
+             ],
+            response_format=RetentionPlan,
+            temperature=0.2
+       )
     
-    response = requests.post(API_URL, headers=headers, json=payload)
-    return response.json()
+        result = completion.choices[0].message.parsed
+        
+        return result
 
-response = generate({
-    "messages": [
-        {
-            "role": "user",
-            "content": "What is the capital of France?"
-        }
-    ],
-    "model": "meta-llama/Llama-3.1-8B-Instruct:novita"
-})
+    
+    
 
-print(response["choices"][0]["message"])
