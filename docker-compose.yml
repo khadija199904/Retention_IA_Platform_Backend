@@ -4,7 +4,7 @@ services:
    image: postgres:16
    restart: always
    environment:
-     POSTGRES_DB: Orchestration_db
+     POSTGRES_DB: Retention_db
      POSTGRES_USER: postgres
      POSTGRES_PASSWORD: secret
    ports:
@@ -15,7 +15,7 @@ services:
 
   backend:
     build: 
-      context: ./Plateforme_Orchestration_IA_Backend
+      context: ./Retention_IA_Platform_Backend
       dockerfile: Dockerfile 
     restart: always
     depends_on:
@@ -31,20 +31,6 @@ services:
       - "8000:8000"
     command: sh -c "sleep 5 && uvicorn api_app.main:app --host 0.0.0.0 --port 8000 --reload"
 
-  frontend:
-    build: 
-      context: ./Retention_IA_Platform_Frontend/retentionRH-app
-      dockerfile: Dockerfile 
-    restart: always
-    depends_on:
-      - backend
-    ports:
-      - "5173:5173"
-    environment:
-      REACT_APP_API_URL: http://backend:8000
-
-
-    command: ["npm", "run", "dev", "--", "--host"] 
 volumes:
   pg_data: 
 
