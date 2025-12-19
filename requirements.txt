@@ -19,5 +19,5 @@ google-genai
 requests
 pytest-mock
 python-jose
-openai
+openai>=0.27.0
 
