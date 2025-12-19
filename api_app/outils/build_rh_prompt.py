@@ -1,41 +1,40 @@
 from ..schemas.employe_schema import EmployeeData
 
-def build_rh_prompt(data: EmployeeData, churn_probability: float) :
-    # On construit le prompt avec une f-string
-    satisfaction_ref = {1: "Faible (Low)", 2: "Moyen (Medium)", 3: "Élevé (High)", 4: "Très Élevé (Very High)"}
-    wlb_map = {1: "Mauvais (Bad)", 2: "Bon (Good)", 3: "Meilleur (Better)", 4: "Excellent (Best)"}
+
+def build_rh_prompt(data: EmployeeData, churn_probability: float):
+    
+    satisfaction_map = {1: "Low", 2: "Medium", 3: "High", 4: "Very High"}
+    #  JobInvolvement utilise la même échelle que satisfaction 
     
     prompt = f"""
-Agis comme un expert RH.
+Agis comme un expert RH. 
 
-Voici les informations sur l employé :
+Voici les informations sur l'employé (ID: {data.employeeid}) :
 - Age : {data.Age} ans
-- Genre : {data.Gender}
 - Situation : {data.MaritalStatus}, habite à {data.DistanceFromHome} km
-- Département : {data.Department}
 - Role : {data.JobRole} (Niveau {data.JobLevel})
-- Déplacements : {data.BusinessTravel}
 - Heures Supplémentaires : {data.OverTime}
 
-SATISFACTION & PERFORMANCE :
-- Satisfaction Job : {data.JobSatisfaction}/4 ({satisfaction_ref.get(data.JobSatisfaction)})
-- Environnement : {data.EnvironmentSatisfaction}/4 ({satisfaction_ref.get(data.EnvironmentSatisfaction)})
-- Relations : {data.RelationshipSatisfaction}/4 ({satisfaction_ref.get(data.RelationshipSatisfaction)})
-- Performance : {data.PerformanceRating}/4
-- Équilibre Vie Pro/Perso : {data.WorkLifeBalance}/4 ({wlb_map.get(data.WorkLifeBalance)})
+SATISFACTION & ENGAGEMENT :
+- Satisfaction Job : {data.JobSatisfaction}/4 ({satisfaction_map.get(data.JobSatisfaction)})
+- Environnement : {data.EnvironmentSatisfaction}/4 ({satisfaction_map.get(data.EnvironmentSatisfaction)})
+- Implication (Job Involvement) : {data.JobInvolvement}/4 ({satisfaction_map.get(data.JobInvolvement)})
 
-CONTEXTE FINANCIER & CARRIÈRE :
-- Salaire Mensuel : {data.MonthlyIncome}
-- Dernière augmentation : {data.PercentSalaryHike}%
+CONTEXTE CARRIÈRE & FINANCIER :
+- Salaire Mensuel : {data.MonthlyIncome} (Taux journalier : {data.DailyRate})
 - Stock Options : Niveau {data.StockOptionLevel}
-- Ancienneté : {data.YearsAtCompany} ans ({data.YearsInCurrentRole} ans au poste actuel)
-- Dernière promotion : il y a {data.YearsSinceLastPromotion} ans
-- Formations l'an dernier : {data.TrainingTimesLastYear}
+- Expérience Totale : {data.TotalWorkingYears} ans
+- Ancienneté Entreprise : {data.YearsAtCompany} ans
+- Années au poste actuel : {data.YearsInCurrentRole} ans
+- Années avec le manager actuel : {data.YearsWithCurrManager} ans
 
-Contexte : ce salarié a un risque élevé de (Churn Probability : {churn_probability}%) de départ selon le modèle ML.
+Contexte : Ce salarié a un risque de départ de {churn_probability}% selon le modèle ML.
 
-Tache :  propose **exactement 3 actions RH très courtes**, **1 phrase maximum chacune**, **directes et opérationnelles** pour le retenir. 
-Ne fais **aucune explication ou justification**, pour le retenir dans l entreprise, en tenant compte de son role, sa satisfaction, sa performance et son équilibre vie professionnelle/personnelle.
-Rédige les actions de façon claire et opérationnelle pour un manager RH. Réponds uniquement avec le plan d'action au format JSON (liste de chaines de caractères).
+Tâche : Propose **exactement 3 actions RH très courtes**, **1 phrase maximum chacune**, **directes et opérationnelles** pour le retenir. 
+Prends en compte son implication, sa relation avec son manager ({data.YearsWithCurrManager} ans) et son ancienneté.
+
+Contraintes : 
+- Ne fais **aucune explication ou justification**.
+- Réponds uniquement avec le plan d'action au format JSON (liste de 3 chaînes de caractères).
 """
     return prompt

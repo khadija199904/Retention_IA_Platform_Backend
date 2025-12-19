@@ -4,7 +4,7 @@ from api_app.outils.load_model import load_model
 from fastapi import HTTPException
 
 
-MODEL_PATH = os.path.join("ml", "saved_models", "Logistic Regression.pkl")
+MODEL_PATH = os.path.join("ml", "saved_models", "Logistic Regression_optimized.pkl")
 
 def get_prediction(features):
 

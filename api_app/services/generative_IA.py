@@ -4,7 +4,7 @@ import json
 import requests
 from google import genai
 from fastapi import HTTPException
-from ..core.config import HF_API_TOKEN ,GEMINI_API_KEY
+from ..core.config import GEMINI_API_KEY
 from ..schemas.generate_plan_schema import RetentionPlan
 
 

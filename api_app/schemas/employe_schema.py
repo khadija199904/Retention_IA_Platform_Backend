@@ -2,6 +2,7 @@ from pydantic import BaseModel,Field
 
 class EmployeeData(BaseModel):
     #   Informations 
+    employeeid  :int = Field(...)
     Age: int = Field(...)
     DailyRate: int = Field(...)
     DistanceFromHome: int = Field(...)

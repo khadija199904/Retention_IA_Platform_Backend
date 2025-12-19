@@ -31,5 +31,6 @@ def load_model(model_path):
 
 if __name__ == "__main__":
 
-    MODEL_PATH = os.path.join("ml", "saved_models", "Logistic Regression.pkl")
-    load_model(MODEL_PATH)
+    MODEL_PATH = os.path.join("ml", "saved_models", "Logistic Regression_optimized.pkl")
+    mo =load_model(MODEL_PATH)
+    print(mo)
