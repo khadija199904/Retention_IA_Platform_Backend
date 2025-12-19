@@ -298,3 +298,10 @@ RetentionAI/
 ├── README.md                       # Documentation complète
 └── requirements.txt                # Liste des dépendances Python
 ```
+
+## Auteur
+
+**Nom :** KHADIJA ELABBIOUI  
+**Email :** khadija.elabbioui1999@gmail.com  
+**LinkedIn :** [linkedin.com/in/khadija-elabbioui](https://www.linkedin.com/in/khadija-elabbioui-308499216/)  
+**GitHub :** [github.com/ton-github](https://github.com/khadija199904)

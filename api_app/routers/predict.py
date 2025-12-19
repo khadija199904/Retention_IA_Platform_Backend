@@ -12,7 +12,7 @@ from api_app.models.users import USERS
 
 
 
-router = APIRouter()
+router = APIRouter( tags=["Predictions"])
 
 
 

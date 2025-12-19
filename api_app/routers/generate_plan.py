@@ -8,7 +8,7 @@ from api_app.core.security import verify_token
 
 
 
-router = APIRouter()
+router = APIRouter( tags=["Generative IA"])
 
 
 @router.post('/generate-retention-plan', response_model=RetentionPlan)
