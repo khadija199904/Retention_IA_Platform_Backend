@@ -3,8 +3,8 @@ from sklearn.compose import ColumnTransformer
 from sklearn.preprocessing import StandardScaler, OneHotEncoder
 from sklearn.linear_model import LogisticRegression
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.pipeline import Pipeline
-from sklearn.metrics import accuracy_score ,f1_score
+
+from sklearn.metrics import f1_score,recall_score
 import mlflow
 import joblib
 import os
@@ -51,24 +51,21 @@ models_params = {
     "Logistic Regression": {
         "model": LogisticRegression(max_iter=1000),
         "params": {
-            "classifier__C":  [0.01, 0.1, 1, 10],
-            "classifier__penalty": ['l1', 'l2']
+            "classifier__C":  [0.01, 0.1, 1, 10,20],
         }
     },
     "Random Forest": {
-        "model": RandomForestClassifier(random_state=42,class_weight='balanced'),
+        "model": RandomForestClassifier(random_state=42),
         "params": {
-            "classifier__n_estimators": [100, 300],
+            "classifier__n_estimators": [50, 100],
             "classifier__max_depth": [5, 10, 20],
-            "classifier__min_samples_leaf": [1, 4, 10],
+            "classifier__min_samples_leaf": [5, 8, 14],
         }
     }
 }
 
 
-# --- Entraînement et évaluation pour chaque modèle ---
-
-
+#  Entraînement et évaluation pour chaque modèle 
 
 for name, config in models_params.items():
     
@@ -86,7 +83,7 @@ for name, config in models_params.items():
     with mlflow.start_run(run_name=name):
         mlflow.set_tag("run_description", "Optimisation par GridSearchCV et SMOTE avec sélection de variables (suppression des colonnes non-pertinentes et faiblement corrélées")
         # Prediction
-        grid = GridSearchCV(pipe_clf, param_grid=params, cv=3 , scoring='f1', n_jobs=-1)
+        grid = GridSearchCV(pipe_clf, param_grid=params, cv=3 , scoring='recall', n_jobs=-1)
         grid.fit(X_train, y_train)
         
         best_pipe = grid.best_estimator_
@@ -107,8 +104,8 @@ for name, config in models_params.items():
         Classification_Report(y_test, y_pred, name, ARTIFACTS_DIR)
 
          # 5. Calcul et affichage du F1 final
-        f1 = f1_score(y_test, y_pred)
-        print(f"Modèle {name} optimisé - F1: {f1:.2f}")
+        recall = recall_score(y_test, y_pred)
+        print(f"Modèle {name} optimisé - recall: {recall:.2f}")
 
         # 6. Sauvegarde  modèle optimisé avec joblib
         file_model = f"saved_models/{name}_optimized.pkl"
