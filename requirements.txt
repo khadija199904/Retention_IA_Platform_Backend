@@ -19,4 +19,5 @@ google-genai
 requests
 pytest-mock
 python-jose
-google-genai
+openai
+
