@@ -7,3 +7,16 @@ scipy==1.11.4
 scikit-learn==1.4.2 
 imbalanced-learn==0.14.0
 numpy==1.26.4
+
+#**** backend ******
+SQLalchemy
+dotenv
+psycopg2-binary
+uvicorn 
+fastapi
+passlib[argon2]
+google-genai
+requests
+pytest-mock
+python-jose
+google-genai

@@ -4,7 +4,7 @@ from sklearn.preprocessing import StandardScaler, OneHotEncoder
 from sklearn.linear_model import LogisticRegression
 from sklearn.ensemble import RandomForestClassifier
 
-from sklearn.metrics import f1_score,recall_score
+from sklearn.metrics import recall_score
 import mlflow
 import joblib
 import os
@@ -41,12 +41,7 @@ preprocessor = ColumnTransformer(
     ],
 )
 
-# models = {
-#     "Logistic Regression": LogisticRegression(max_iter=1000),
-#     "Random Forest": RandomForestClassifier(
-#         n_estimators=200, random_state=42
-#     )
-# }
+
 models_params = {
     "Logistic Regression": {
         "model": LogisticRegression(max_iter=1000),
