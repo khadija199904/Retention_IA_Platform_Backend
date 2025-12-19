@@ -10,6 +10,7 @@ import joblib
 import os
 from imblearn.over_sampling import SMOTE
 from imblearn.pipeline import Pipeline as ImbPipeline
+from sklearn.model_selection import GridSearchCV
 
 import os
 
@@ -40,21 +41,40 @@ preprocessor = ColumnTransformer(
     ],
 )
 
-models = {
-    "Logistic Regression": LogisticRegression(max_iter=1000),
-    "Random Forest": RandomForestClassifier(
-        n_estimators=200, random_state=42
-    )
+# models = {
+#     "Logistic Regression": LogisticRegression(max_iter=1000),
+#     "Random Forest": RandomForestClassifier(
+#         n_estimators=200, random_state=42
+#     )
+# }
+models_params = {
+    "Logistic Regression": {
+        "model": LogisticRegression(max_iter=1000),
+        "params": {
+            "classifier__C":  [0.01, 0.1, 1, 10],
+            "classifier__penalty": ['l1', 'l2']
+        }
+    },
+    "Random Forest": {
+        "model": RandomForestClassifier(random_state=42,class_weight='balanced'),
+        "params": {
+            "classifier__n_estimators": [100, 300],
+            "classifier__max_depth": [5, 10, 20],
+            "classifier__min_samples_leaf": [1, 4, 10],
+        }
+    }
 }
 
+
 # --- Entraînement et évaluation pour chaque modèle ---
-best_model = None
-best_score = 0
-name_model = ""
 
 
-for name, model in models.items():
-   
+
+for name, config in models_params.items():
+    
+    
+    model = config["model"]
+    params = config["params"]
  
     pipe_clf = ImbPipeline(steps=[
     ('preprocessor', preprocessor),
@@ -64,16 +84,19 @@ for name, model in models.items():
      # Entrainnement 
     pipe_clf.fit(X_train, y_train)
     with mlflow.start_run(run_name=name):
-        mlflow.set_tag("run_description", "Garder toutes les colonnes et entraîner avec paramètres par défaut+ SMOTE")
+        mlflow.set_tag("run_description", "Optimisation par GridSearchCV et SMOTE avec sélection de variables (suppression des colonnes non-pertinentes et faiblement corrélées")
         # Prediction
-        y_pred = pipe_clf.predict(X_test)
-        y_prob = pipe_clf.predict_proba(X_test)[:,1]
+        grid = GridSearchCV(pipe_clf, param_grid=params, cv=3 , scoring='f1', n_jobs=-1)
+        grid.fit(X_train, y_train)
+        
+        best_pipe = grid.best_estimator_
+       
+        # Évaluation
+        y_pred = best_pipe.predict(X_test)
+        y_prob = best_pipe.predict_proba(X_test)[:, 1]
     
-    
-        f1 = f1_score(y_test, y_pred, average='binary')
-        # mlflow.log_metric("f1_score", f1)
-    
-    
+        mlflow.log_params(grid.best_params_)
+        mlflow.sklearn.log_model(best_pipe, f"model_{name}")
     
         # Log modèle
         mlflow.sklearn.log_model(pipe_clf, f"model_{name}")
@@ -83,10 +106,13 @@ for name, model in models.items():
         ROC_curve(y_test, y_prob, name, ARTIFACTS_DIR)
         Classification_Report(y_test, y_pred, name, ARTIFACTS_DIR)
 
-    
-    print(f"Modèle {name} logué avec F1 = {f1:.2f}")
+         # 5. Calcul et affichage du F1 final
+        f1 = f1_score(y_test, y_pred)
+        print(f"Modèle {name} optimisé - F1: {f1:.2f}")
 
-      #  Sauvegarde du modèle avec joblib
-    file_model = f"saved_models/{name}.pkl"
-    joblib.dump(pipe_clf, file_model)
-    print(f"Modèle {name} sauvegardé dans {file_model}")
+        # 6. Sauvegarde  modèle optimisé avec joblib
+        file_model = f"saved_models/{name}_optimized.pkl"
+        joblib.dump(best_pipe, file_model)
+        print(f"Sauvegardé : {file_model}")
+      
+   
