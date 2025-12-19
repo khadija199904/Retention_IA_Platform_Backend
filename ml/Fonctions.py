@@ -11,9 +11,24 @@ def load_data(filepath):
 
 def clean_data (df) :
     df_cleaned = df.copy()
-    # Supprimer les collones unitile
-    cols_to_drop = ['EmployeeCount','EmployeeNumber','Over18','StandardHours']
-    df_cleaned = df_cleaned.drop(columns=cols_to_drop)
+   
+     # Colonnes strictement inutiles
+    cols_useless = ['EmployeeCount', 'EmployeeNumber', 'Over18', 'StandardHours']
+    
+    # Colonnes numériques faiblement corrélées
+    cols_low_corr = [
+        'HourlyRate', 'MonthlyRate', 'NumCompaniesWorked',
+        'PercentSalaryHike', 'YearsSinceLastPromotion'
+             ]
+    
+    # Colonnes catégorielles faiblement corrélées
+    cols_cat_low_corr = [
+        'BusinessTravel', 'Department', 'Education', 'EducationField',
+        'Gender', 'PerformanceRating', 'RelationshipSatisfaction',
+        'TrainingTimesLastYear', 'WorkLifeBalance'
+    ]
+
+    df_cleaned = df_cleaned.drop(columns=cols_useless + cols_low_corr + cols_cat_low_corr)
 
     return df_cleaned
 
@@ -80,3 +95,10 @@ def Classification_Report(y_true, y_pred,model_name,artifacts_dir):
     # Log dans MLflow
     mlflow.log_artifact(file_report)
     return report
+
+
+if __name__ == "__main__":
+    data = load_data("Attrition-RH-Data.csv")
+    df = clean_data(data)
+    print(df.columns)
+    print(df.info())
