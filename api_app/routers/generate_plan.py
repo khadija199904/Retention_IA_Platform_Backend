@@ -1,7 +1,6 @@
 from fastapi import APIRouter, HTTPException ,Depends
 from ..schemas.employe_schema import EmployeeData
 from ..schemas.generate_plan_schema import RetentionPlan
-import requests
 from ..outils.build_rh_prompt import build_rh_prompt
 from ..services.generative_IA import generate_retention_plan
 from api_app.outils.get_predictions import get_prediction
