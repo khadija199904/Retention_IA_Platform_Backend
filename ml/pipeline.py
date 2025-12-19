@@ -4,7 +4,7 @@ from sklearn.preprocessing import StandardScaler, OneHotEncoder
 from sklearn.linear_model import LogisticRegression
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.pipeline import Pipeline
-from sklearn.metrics import accuracy_score ,f1_score
+from sklearn.metrics import f1_score
 import mlflow
 import joblib
 import os
