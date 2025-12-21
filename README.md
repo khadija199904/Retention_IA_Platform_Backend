@@ -9,14 +9,21 @@
 ##  Présentation
 RetentionAI est le moteur d'intelligence décisionnelle pour les RH. Ce backend expose une API REST sécurisée permettant de prédire le risque de départ des employés et de générer des stratégies de rétention via l'IA Générative 
 
-##  Sommaire
-1. [Objectifs du Projet](#-objectifs-du-projet)
-2. [Architecture Technique](#-architecture-technique)
-3. [Installation et Lancement](#-installation-et-lancement)
-4. [Pipeline Machine Learning](#-pipeline-machine-learning)
-5. [Documentation de l'API](#-documentation-de-lapi)
-6. [IA Générative et Prompt Engineering](#-ia-générative-et-prompt-engineering)
-7. [Sécurité et Traçabilité](#-sécurité-et-traçabilité)
+## Table des matières
+
+1. [Présentation](#présentation)
+2. [Objectifs du Projet](#objectifs-du-projet)
+3. [Architecture Globale du Projet](#architecture-globale-du-projet)
+4. [Stack Technique](#stack-technique)
+5. [Installation et Lancement](#installation--lancement)
+6. [Tests](#tests)
+7. [Pipeline Machine Learning](#pipeline-machine-learning)
+8. [Documentation de l’API](#documentation-de-lapi)
+9. [IA Générative et Prompt Engineering](#ia-générative-et-prompt-engineering)
+10. [Tests Unitaires Backend](#tests-unitaires-backend)
+11. [Structure du Projet](#structure-du-projet)
+12. [Auteur](#auteur)
+
 
 ## Objectifs du Projet
 
@@ -122,7 +129,7 @@ L'API sera accessible sur http://localhost:8000. La documentation Swagger est di
 pytest -v
 ```
 ## Pipeline Machine Learning
-
+### Flux complet du 
 ```mermaid
 graph LR
     %% --- DEFINITION DES COULEURS ---
@@ -146,6 +153,12 @@ graph LR
     Optimization --> Tracking
 
 ```
+### Interface MLflow –Visualisation des Expériences
+
+Le suivi MLflow permet de visualiser facilement les métriques, paramètres et modèles. Voici un exemple d’affichage :
+Interface : ![mlf Experiment](./images/Interface.png)
+Modèles Entraînés : ![Modèles](./images/Traning.png)
+
 # Documentation de l'API
 
 ## Authentification
