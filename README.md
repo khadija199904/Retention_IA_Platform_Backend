@@ -277,8 +277,8 @@ RetentionAI/
 │   │
 │   ├── routers/                    # Points d'accès (Endpoints)
 │   │   ├── __init__.py
-│   │   ├── predict.py              # POST /predict et /generate-plan
-│   │   ├── analyse.py              # POST /predict et /generate-plan
+│   │   ├── predict.py              # POST /predict
+│   │   ├── generate_plan.py        # POST /generate-plan
 │   │   └── auth.py                 # POST /register et /login
 │   │
 │   ├── schemas/                    # Validation Pydantic
