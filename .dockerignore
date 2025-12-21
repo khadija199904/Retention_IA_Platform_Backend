@@ -7,3 +7,7 @@ pytest_cache
 .gitignore
 .pytest_cache
 Tests
+.github
+images
+mlruns/
+mlflow.db
