@@ -5,6 +5,8 @@
 ![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)
 ![Google Gemini](https://img.shields.io/badge/Google%20Gemini-8E75B2?style=for-the-badge&logo=google&logoColor=white)
 ![Git](https://img.shields.io/badge/Git-F05032?style=flat&logo=git&logoColor=white) 
+![Jupyter Notebook](https://img.shields.io/badge/Jupyter-F37626?style=flat&logo=jupyter&logoColor=white)
+![MLflow](https://img.shields.io/badge/MLflow-02589C?style=flat&logo=mlflow&logoColor=white)
 
 ##  Présentation
 RetentionAI est le moteur d'intelligence décisionnelle pour les RH. Ce backend expose une API REST sécurisée permettant de prédire le risque de départ des employés et de générer des stratégies de rétention via l'IA Générative 
@@ -108,7 +110,7 @@ cd Retention_IA_Platform_Backend
 ### 2. Environnement(.env)
 1. **Env** : Créer un fichier `.env` avec vos clés API et accès DB.
 ```bash
-POSTGRES_USER=USE
+POSTGRES_USER=USER
 POSTGRES_PASSWORD=PASSWORD
 POSTGRES_HOST=localhost
 POSTGRES_DB=DN_NAME
@@ -165,15 +167,15 @@ Modèles Entraînés : ![Modèles](./images/Traning.png)
 
 | Méthode | Endpoint  | Description |
 |---------|-----------|-------------|
-| POST    | /register | Création d'un compte RH (mot de passe hashé via Bcrypt). |
+| POST    | /register | Création d'un compte RH (mot de passe hashé via argon2). |
 | POST    | /login    | Retourne un Access Token JWT (valide 30 min). |
 
 ## Endpoints Métier (Sécurisés par JWT)
 
 | Méthode | Endpoint                  | Description |
 |---------|---------------------------|-------------|
-| POST    | /predict                  | Calcule la probabilité de départ d’un employé. |
-| POST    | /generate-retention-plan  | Calcule le risque via le modèle ML. Si le risque > 50%, déclenche l'IA générative pour créer 3 actions concrètes. Enregistre la transaction dans l'historique PostgreSQL. |
+| POST    | /predict                  | Calcule la probabilité de départ d’un employé.Enregistre les predictions dans l'historique PostgreSQL. |
+| POST    | /generate-retention-plan  | Calcule le risque via le modèle ML. Si le risque > 50%, déclenche l'IA générative pour créer 3 actions concrètes. |
 
 ##  IA Générative et Prompt Engineering
 
