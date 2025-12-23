@@ -13,18 +13,11 @@ def load_model(model_path):
         model = joblib.load(model_path)
         
         return model
-    except ValueError as e:
-        raise HTTPException(
-            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail="Le fichier du modèle est invalide ou corrompu: {e}" 
-        ) 
-
+    
     except Exception as e:
         
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Erreur interne lors du chargement du modèle: {e}"
-        )
+        raise HTTPException(status_code=500, detail=f"Erreur interne lors du chargement du modèle: {e}"
+                   )
 
 
 

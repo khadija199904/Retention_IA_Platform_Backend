@@ -18,6 +18,7 @@ router = APIRouter( tags=["Predictions"])
 
 @router.post("/predict",response_model=PredictionResponse)
 async def predict_churn(features: EmployeeData,token = Depends(verify_token),db: Session = Depends(get_db)):
+    
     username = token["Username"]
     
     try:

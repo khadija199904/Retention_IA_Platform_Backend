@@ -12,10 +12,12 @@ router = APIRouter( prefix="/auth", tags=["Authentication"])
 async def Register(user : UserRegister ,db: Session = Depends(get_db)) :
 
    if not user.username.strip() or not user.password.strip() :
+    
     raise HTTPException(
         status_code=400,
         detail="Veuillez remplir tous les champs : nom d'utilisateur et mot de passe."
     )
+   
    existing_user = db.query(USERS).filter(USERS.username == user.username ).first()
    if existing_user:
          raise HTTPException(status_code=400,detail="Compte Déja existe")
@@ -25,11 +27,7 @@ async def Register(user : UserRegister ,db: Session = Depends(get_db)) :
    db.add(new_user)
    db.commit()
    db.refresh(new_user)
-   user_in_db = db.query(USERS).filter(USERS.username == user.username).first()
-   if user_in_db:
-      print("Utilisateur confirmé dans la base :", user_in_db.username)
-   else:
-        print("Erreur : l'utilisateur n'a pas été ajouté")
+   
    return {"message": "Compte créé avec succès", "username": new_user.username}
 
 

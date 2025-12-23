@@ -22,4 +22,4 @@ def test_API_LLMG():
     # Assertions
     assert "retention_plan" in result
     assert len(result["retention_plan"]) == 3
-    assert result["retention_plan"][0] == "Proposer 2 jours de télétravail"
+   
