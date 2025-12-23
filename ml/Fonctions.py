@@ -87,6 +87,7 @@ def Classification_Report(y_true, y_pred,model_name,artifacts_dir):
         "f1_score": report["1"]["f1-score"]    # F1 
     })
     mlflow.log_metrics(metrics)
+    
      # Sauvegarde le report texte
     file_report = f"{artifacts_dir}/classification_report_{model_name}.txt"
     with open(file_report, "w") as f:

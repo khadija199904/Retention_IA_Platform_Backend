@@ -26,19 +26,27 @@ mlflow.set_experiment("Retention_IA_Experiment")
 
 
 
-data = load_data("Attrition-RH-Data.csv")
+data = load_data("ml/Attrition-RH-Data.csv")
 df = clean_data(data)
 X,X_train, X_test, y_train, y_test = split_data(df)
 
+
 #  Pipeline Scikit-learn
-numeric_columns = X.select_dtypes(include='number').columns.tolist()
-catg_columns = X.select_dtypes(include='object').columns.tolist()
+
+ordinal_cols = ['EnvironmentSatisfaction','JobInvolvement','JobSatisfaction']
+X_new = X.drop(columns=ordinal_cols)
+catg_cols = X.select_dtypes(include='object').columns.tolist()
+numeric_cols = X_new.select_dtypes(include='number').columns.tolist()
+
 
 preprocessor = ColumnTransformer(
     transformers=[
-        ('num', StandardScaler(), numeric_columns),
-        ('cat', OneHotEncoder(), catg_columns)
+        ('num', StandardScaler(), numeric_cols),
+        ('ordinal', 'passthrough', ordinal_cols),
+        ('cat', OneHotEncoder(), catg_cols)
+        
     ],
+    remainder="passthrough"
 )
 
 
@@ -74,7 +82,7 @@ for name, config in models_params.items():
     ('classifier', model)
       ])
      # Entrainnement 
-    pipe_clf.fit(X_train, y_train)
+    
     with mlflow.start_run(run_name=name):
         mlflow.set_tag("run_description", "Optimisation par GridSearchCV et SMOTE avec sélection de variables (suppression des colonnes non-pertinentes et faiblement corrélées")
         # Prediction
@@ -88,11 +96,9 @@ for name, config in models_params.items():
         y_prob = best_pipe.predict_proba(X_test)[:, 1]
     
         mlflow.log_params(grid.best_params_)
-        mlflow.sklearn.log_model(best_pipe, f"model_{name}")
-    
         # Log modèle
-        mlflow.sklearn.log_model(pipe_clf, f"model_{name}")
-        
+        mlflow.sklearn.log_model(best_pipe, f"model_{name}")
+
         # Log confusion matrix, ROC et classification report
         Matrice_confusion(y_test, y_pred, name, ARTIFACTS_DIR)
         ROC_curve(y_test, y_prob, name, ARTIFACTS_DIR)
