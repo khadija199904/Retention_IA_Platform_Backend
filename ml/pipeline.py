@@ -1,6 +1,6 @@
-from ml.Fonctions import load_data,clean_data,split_data,Matrice_confusion,ROC_curve,Classification_Report
+from Fonctions import load_data,clean_data,split_data,Matrice_confusion,ROC_curve,Classification_Report
 from sklearn.compose import ColumnTransformer
-from sklearn.preprocessing import StandardScaler, OneHotEncoder
+from sklearn.preprocessing import RobustScaler, OneHotEncoder
 from sklearn.linear_model import LogisticRegression
 from sklearn.ensemble import RandomForestClassifier
 
@@ -26,14 +26,20 @@ mlflow.set_experiment("Retention_IA_Experiment")
 
 
 
-data = load_data("ml/Attrition-RH-Data.csv")
+data = load_data("Attrition-RH-Data.csv")
 df = clean_data(data)
-X,X_train, X_test, y_train, y_test = split_data(df)
+X,y,X_train, X_test, y_train, y_test = split_data(df)
 
 
 #  Pipeline Scikit-learn
-
-ordinal_cols = ['EnvironmentSatisfaction','JobInvolvement','JobSatisfaction']
+ordinal_cols = [
+    'EnvironmentSatisfaction',
+    'JobInvolvement',
+    'JobSatisfaction',
+    'WorkLifeBalance',
+    'JobLevel',
+    'StockOptionLevel'
+]
 X_new = X.drop(columns=ordinal_cols)
 catg_cols = X.select_dtypes(include='object').columns.tolist()
 numeric_cols = X_new.select_dtypes(include='number').columns.tolist()
@@ -41,7 +47,7 @@ numeric_cols = X_new.select_dtypes(include='number').columns.tolist()
 
 preprocessor = ColumnTransformer(
     transformers=[
-        ('num', StandardScaler(), numeric_cols),
+        ('num', RobustScaler(), numeric_cols),
         ('ordinal', 'passthrough', ordinal_cols),
         ('cat', OneHotEncoder(), catg_cols)
         
@@ -54,15 +60,16 @@ models_params = {
     "Logistic Regression": {
         "model": LogisticRegression(max_iter=1000),
         "params": {
-            "classifier__C":  [0.01, 0.1, 1, 10,20],
+            "classifier__C":  [0.01, 0.1,0.05, 1,10],
+            
         }
     },
     "Random Forest": {
         "model": RandomForestClassifier(random_state=42),
         "params": {
-            "classifier__n_estimators": [50, 100],
-            "classifier__max_depth": [5, 10, 20],
-            "classifier__min_samples_leaf": [5, 8, 14],
+            "classifier__n_estimators": [50, 100,200],
+            "classifier__max_depth": [20, 50, 30],
+            "classifier__min_samples_leaf": [100, 170, 250],
         }
     }
 }
@@ -95,9 +102,11 @@ for name, config in models_params.items():
         y_pred = best_pipe.predict(X_test)
         y_prob = best_pipe.predict_proba(X_test)[:, 1]
     
+    
         mlflow.log_params(grid.best_params_)
         # Log modèle
-        mlflow.sklearn.log_model(best_pipe, f"model_{name}")
+        mlflow.sklearn.log_model(best_pipe, name=f"model_{name}")
+
 
         # Log confusion matrix, ROC et classification report
         Matrice_confusion(y_test, y_pred, name, ARTIFACTS_DIR)

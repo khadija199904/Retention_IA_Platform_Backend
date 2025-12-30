@@ -6,8 +6,10 @@ pytest_cache
 .git
 .gitignore
 .pytest_cache
-Tests
-.github
 images
 mlruns/
 mlflow.db
+Dockerfile
+README.md
+.git
+

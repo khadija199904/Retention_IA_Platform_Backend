@@ -38,7 +38,7 @@ def split_data(df):
 
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-    return X,X_train, X_test, y_train, y_test
+    return X,y,X_train, X_test, y_train, y_test
 
 
 def Matrice_confusion(y_true, y_pred,model_name,artifacts_dir ):
@@ -97,5 +97,6 @@ def Classification_Report(y_true, y_pred,model_name,artifacts_dir):
 if __name__ == "__main__":
     data = load_data("Attrition-RH-Data.csv")
     df = clean_data(data)
-    print(df.columns)
-    print(df.info())
+    df.info()
+    print(df.columns.tolist())
+    
