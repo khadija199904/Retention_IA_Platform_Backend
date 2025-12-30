@@ -1,12 +1,14 @@
 from fastapi import APIRouter, HTTPException ,Depends
 from sqlalchemy.orm import Session
 from api_app.schemas.predict_schema import  PredictionResponse
-from api_app.schemas.employe_schema import EmployeeData
+from api_app.schemas.employe_schema import EmployeeData 
 from api_app.dependencies import get_db
 from api_app.core.security import verify_token
 from api_app.outils.get_predictions import get_prediction
 from api_app.outils.predictions_history import save_prediction_history
-from api_app.models.users import USERS
+from api_app.models.users import USERS 
+from api_app.models.employee import EmployeeTable
+from api_app.crud.create_employee import create_new_employee
 
 
 
@@ -26,12 +28,13 @@ async def predict_churn(features: EmployeeData,token = Depends(verify_token),db:
         user = db.query(USERS).filter(USERS.username == username).first()
         if not user:
             raise HTTPException(status_code=404, detail="Utilisateur introuvable")
+        
+        new_employee = create_new_employee(db, features)
+        emp_id = new_employee.employeeid
+        
 
-        # Récupérer l'id réel
-        userid = user.id
-        employeeid = features.employeeid
         probability = get_prediction(features)
-        save_prediction_history(db=db, userid=userid, employeeid=employeeid, probability=probability)
+        save_prediction_history(db=db, userid=user.id, employeeid=emp_id, probability=probability)
         
 
     except ValueError as e:

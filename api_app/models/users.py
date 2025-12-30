@@ -1,7 +1,7 @@
 from sqlalchemy import Column,Integer,String ,DateTime,func
 from sqlalchemy.orm import relationship
 from api_app.database import Base
-from .predictions import PredictionHistory
+
 
 
 class USERS(Base) :
@@ -13,5 +13,4 @@ class USERS(Base) :
     createdat = Column(DateTime,default=func.now())
 
     
-    predictions = relationship("PredictionHistory", back_populates="users")
-    
+    predictions = relationship("PredictionHistory", back_populates="user")

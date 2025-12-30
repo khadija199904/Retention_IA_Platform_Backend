@@ -1,42 +1,43 @@
 from pydantic import BaseModel, Field, ConfigDict
 
+
 class EmployeeData(BaseModel):
+    
     # --- Informations de base & Démographie ---
-    employeeid: int = Field(...)
     Age: int = Field(..., ge=18, le=70)
-    MaritalStatus: str = Field(..., example="Single", description="Single, Married, or Divorced")
+    MaritalStatus: str = Field(..., description="Single, Married, or Divorced")
     DistanceFromHome: int = Field(..., ge=1, description="Distance du domicile en km")
 
     # --- Parcours Professionnel & Éducation ---
-    Department: str = Field(..., example="Research & Development")
-    EducationField: str = Field(..., example="Life Sciences")
-    BusinessTravel: str = Field(..., example="Travel_Rarely", description="Non-Travel, Travel_Rarely, Travel_Frequently")
+    Department: str
+    EducationField: str
+    BusinessTravel: str = Field(..., description="Non-Travel, Travel_Rarely, Travel_Frequently")
     
     # --- Rôle & Satisfaction (Échelles de 1 à 4) ---
-    JobRole: str = Field(..., example="Sales Executive")
+    JobRole: str
     JobLevel: int = Field(..., ge=1, le=5)
     
     EnvironmentSatisfaction: int = Field(
-        ..., ge=1, le=4, 
+        ..., ge=1, le=4,
         description="1 'Low' 2 'Medium' 3 'High' 4 'Very High'"
     )
     JobInvolvement: int = Field(
-        ..., ge=1, le=4, 
+        ..., ge=1, le=4,
         description="1 'Low' 2 'Medium' 3 'High' 4 'Very High'"
     )
     JobSatisfaction: int = Field(
-        ..., ge=1, le=4, 
+        ..., ge=1, le=4,
         description="1 'Low' 2 'Medium' 3 'High' 4 'Very High'"
     )
     WorkLifeBalance: int = Field(
-        ..., ge=1, le=4, 
+        ..., ge=1, le=4,
         description="1 'Bad' 2 'Good' 3 'Better' 4 'Best'"
     )
 
     # --- Rémunération & Temps de Travail ---
-    DailyRate: int = Field(..., example=1102)
-    MonthlyIncome: int = Field(..., example=5993)
-    OverTime: str = Field(..., example="Yes", description="Yes or No")
+    DailyRate: int
+    MonthlyIncome: int
+    OverTime: str = Field(..., description="Yes or No")
     StockOptionLevel: int = Field(..., ge=0, le=3)
 
     # --- Historique & Performance ---
@@ -49,7 +50,7 @@ class EmployeeData(BaseModel):
     model_config = ConfigDict(
         json_schema_extra={
             "example": {
-                "employeeid": 1,
+                
                 "Age": 41,
                 "BusinessTravel": "Travel_Rarely",
                 "DailyRate": 1102,

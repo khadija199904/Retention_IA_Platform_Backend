@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session
-from api_app.models.users import PredictionHistory
+from api_app.models.predictions import PredictionHistory
 
 def save_prediction_history(db: Session, userid: int, employeeid: int, probability: float) :
     

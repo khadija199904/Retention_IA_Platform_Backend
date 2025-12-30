@@ -1,16 +1,15 @@
 from sqlalchemy import Column, Integer, String, create_engine
-from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
+from api_app.database import Base
 
 
-
-Base = declarative_base()
 
 class EmployeeTable(Base):
     __tablename__ = "employees"
 
     # employeeid est la clé primaire
     employeeid = Column(Integer, primary_key=True, index=True)
+    
     
     Age = Column(Integer)
     BusinessTravel = Column(String)
@@ -35,4 +34,5 @@ class EmployeeTable(Base):
     YearsWithCurrManager = Column(Integer)
     
     # Relation vers l'historique : permet de faire employee.predictions
+    
     predictions = relationship("PredictionHistory", back_populates="employee")
