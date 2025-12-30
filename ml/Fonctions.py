@@ -16,19 +16,15 @@ def clean_data (df) :
     cols_useless = ['EmployeeCount', 'EmployeeNumber', 'Over18', 'StandardHours']
     
     # Colonnes numériques faiblement corrélées
-    cols_low_corr = [
+    independent_num_features = [
         'HourlyRate', 'MonthlyRate', 'NumCompaniesWorked',
         'PercentSalaryHike', 'YearsSinceLastPromotion'
              ]
     
     # Colonnes catégorielles faiblement corrélées
-    cols_cat_low_corr = [
-        'BusinessTravel', 'Department', 'Education', 'EducationField',
-        'Gender', 'PerformanceRating', 'RelationshipSatisfaction',
-        'TrainingTimesLastYear', 'WorkLifeBalance'
-    ]
+    independent_catg_features =['Education', 'Gender', 'PerformanceRating', 'RelationshipSatisfaction']
 
-    df_cleaned = df_cleaned.drop(columns=cols_useless + cols_low_corr + cols_cat_low_corr)
+    df_cleaned = df_cleaned.drop(columns=cols_useless + independent_num_features + independent_catg_features)
 
     return df_cleaned
 
@@ -72,7 +68,7 @@ def ROC_curve(y_true, y_prob,model_name,artifacts_dir):
     file_ROC = f"{artifacts_dir}/roc_curve_{model_name}.png"
     plt.savefig(file_ROC)
     mlflow.log_artifact(file_ROC)
-    # mlflow.log_metric("roc_auc", roc_score)
+    mlflow.log_metric("roc_auc", roc_score)
     plt.close()
 
 
@@ -83,7 +79,7 @@ def Classification_Report(y_true, y_pred,model_name,artifacts_dir):
     metrics = ({
         "accuracy": report["accuracy"],                   # score global
         "precision": report["1"]["precision"], # précision 
-        "recall": report["1"]["recall"],       # rappel 
+        "recall": report["1"]["recall"],       # recall
         "f1_score": report["1"]["f1-score"]    # F1 
     })
     mlflow.log_metrics(metrics)
