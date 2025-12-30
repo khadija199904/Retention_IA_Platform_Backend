@@ -12,7 +12,8 @@ class PredictionHistory(Base):
     timestamp = Column(DateTime, default=func.now(), nullable=False)
     userid = Column(Integer, ForeignKey('users.id'), nullable=False)
     
-    employeeid = Column(Integer, nullable=False)
+    employeeid = Column(Integer, ForeignKey('employees.employeeid'), nullable=False)
     probability = Column(Float, nullable=False)
 
     user = relationship("USERS", back_populates="predictions")
+    employee = relationship("EmployeeTable", back_populates="predictions")

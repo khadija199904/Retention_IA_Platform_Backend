@@ -13,4 +13,5 @@ class USERS(Base) :
     createdat = Column(DateTime,default=func.now())
 
     
-    predictions = relationship("PredictionHistory", back_populates="user")
+    predictions = relationship("PredictionHistory", back_populates="users")
+    
