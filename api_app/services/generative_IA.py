@@ -12,7 +12,7 @@ def generate_retention_plan(prompt):
       
 
  try :
-    response = client.models.generate_content(model="gemini-2.5-flash-lite", contents=prompt,config={
+    response = client.models.generate_content(model="gemini-2.5-flash", contents=prompt,config={
         "response_mime_type": "application/json",
         "response_json_schema": RetentionPlan.model_json_schema(),
         "temperature": 0.2 
