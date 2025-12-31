@@ -224,6 +224,7 @@ sequenceDiagram
 | Hugging Face Timeout | 504 Gateway Timeout |
 | Hugging Face Erreur Réseau | 502 Bad Gateway |
 | Gemini indisponible | 503 Service Unavailable |
+| Limite de requêtes atteinte | 429 Too Many Requests |
 | Réponse Gemini mal formée / JSON invalide | 500 Internal Server Error |
 | Score de classification trop faible | 400 Bad Request |
 
