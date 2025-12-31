@@ -1,0 +1,20 @@
+# Exclure les données lourdes
+ml/Attrition-RH-Data.csv
+ml/analyse-preparation.ipynb
+ml/artifacts/
+ml/pipeline.py
+ml/Fonctions.py
+
+# Exclure les tests et docs
+Tests/
+README.md
+.github/
+.dockerignore
+Dockerfile
+docker-compose.yml
+
+# Exclure les dossiers Python inutiles
+__pycache__/
+*.pyc
+.venv/
+.env
