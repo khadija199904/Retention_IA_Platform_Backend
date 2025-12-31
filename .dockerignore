@@ -12,4 +12,5 @@ mlflow.db
 Dockerfile
 README.md
 .git
+.env
 
