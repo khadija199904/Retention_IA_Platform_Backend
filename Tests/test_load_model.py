@@ -1,7 +1,7 @@
 import pytest
 import os
 from fastapi import HTTPException
-from api_app.outils.load_model import load_model  
+from api.outils.load_model import load_model  
 
 # Définir le chemin du modèle
 MODEL_PATH = os.path.join("ml", "saved_models", "Logistic Regression.pkl")

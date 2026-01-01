@@ -1,7 +1,7 @@
 
 from sqlalchemy import Column,Integer,String ,DateTime,ForeignKey,func ,Float
 from sqlalchemy.orm import relationship
-from api_app.database import Base
+from api.database import Base
 
 
 # Table des logs d'analyses

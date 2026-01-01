@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
-from api_app.models.employee import EmployeeTable
-from api_app.schemas.employe_schema import EmployeeData 
+from api.models.employee import EmployeeTable
+from api.schemas.employe_schema import EmployeeData 
 
 def create_new_employee(db: Session, employee: EmployeeData):
     """

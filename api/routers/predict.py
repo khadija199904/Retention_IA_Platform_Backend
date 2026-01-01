@@ -1,14 +1,14 @@
 from fastapi import APIRouter, HTTPException ,Depends
 from sqlalchemy.orm import Session
-from api_app.schemas.predict_schema import  PredictionResponse
-from api_app.schemas.employe_schema import EmployeeData 
-from api_app.dependencies import get_db
-from api_app.core.security import verify_token
-from api_app.outils.get_predictions import get_prediction
-from api_app.outils.predictions_history import save_prediction_history
-from api_app.models.users import USERS 
-from api_app.models.employee import EmployeeTable
-from api_app.crud.create_employee import create_new_employee
+from api.schemas.predict_schema import  PredictionResponse
+from api.schemas.employe_schema import EmployeeData 
+from api.dependencies import get_db
+from api.core.security import verify_token
+from api.outils.get_predictions import get_prediction
+from api.outils.predictions_history import save_prediction_history
+from api.models.users import USERS 
+from api.models.employee import EmployeeTable
+from api.crud.create_employee import create_new_employee
 
 
 
