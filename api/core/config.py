@@ -3,7 +3,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 # utulise pour vercel
-DATABASE_URL = os.getenv("DATABASE_URL")
+DATABASE_URL = os.getenv("POSTGRES_PRISMA_URL") or os.getenv("POSTGRES_URL") or os.getenv("DATABASE_URL")
 
 if not DATABASE_URL:
     USER=os.getenv("POSTGRES_USER")
