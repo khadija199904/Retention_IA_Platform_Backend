@@ -1,21 +1,10 @@
 from sqlalchemy import create_engine,text
 import os
 from sqlalchemy.orm import sessionmaker,declarative_base
-from .core.config import USER,PASSWORD,HOST,PORT,DB
+from api.core.config import DATABASE_URL
 
 
-DB_URL = os.getenv("DATABASE_URL")
-
-if not DB_URL:
-    # On s'assure que PORT n'est pas None pour éviter l'erreur de base 10
-    safe_port = PORT if (PORT and str(PORT) != 'None') else "5432"
-    DB_URL = f"postgresql+psycopg2://{USER}:{PASSWORD}@{HOST}:{safe_port}/{DB}"
-
-
-
-
-
-engine = create_engine (DB_URL)
+engine = create_engine (DATABASE_URL)
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
