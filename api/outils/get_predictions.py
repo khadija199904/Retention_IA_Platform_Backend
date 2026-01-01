@@ -1,6 +1,6 @@
 import os
 import pandas as pd
-from api_app.outils.load_model import load_model
+from api.outils.load_model import load_model
 from fastapi import HTTPException
 
 

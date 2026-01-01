@@ -1,7 +1,7 @@
 from passlib.context import CryptContext
 from fastapi import Header 
 from jose import jwt 
-from api_app.core.config import SECRET_KEY
+from api.core.config import SECRET_KEY
 from fastapi import HTTPException
 
 
