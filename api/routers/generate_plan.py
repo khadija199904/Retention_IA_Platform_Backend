@@ -3,8 +3,8 @@ from ..schemas.employe_schema import EmployeeData
 from ..schemas.generate_plan_schema import RetentionPlan
 from ..outils.build_rh_prompt import build_rh_prompt
 from ..services.generative_IA import generate_retention_plan
-from api_app.outils.get_predictions import get_prediction
-from api_app.core.security import verify_token
+from api.outils.get_predictions import get_prediction
+from api.core.security import verify_token
 
 
 

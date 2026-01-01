@@ -2,7 +2,7 @@
 import os
 from unittest.mock import Mock,patch
 os.environ["GEMINI_API_KEY"] = "fake_key"
-from api_app.services.generative_IA import client, generate_retention_plan
+from api.services.generative_IA import client, generate_retention_plan
 
 def test_API_LLMG(mocker):
     
