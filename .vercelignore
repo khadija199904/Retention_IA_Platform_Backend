@@ -6,7 +6,6 @@ ml/pipeline.py
 ml/Fonctions.py
 ml/artifacts/
 *.png
-*.txt
 *.md
 /images
 
