@@ -4,6 +4,11 @@ ml/analyse-preparation.ipynb
 ml/artifacts/
 ml/pipeline.py
 ml/Fonctions.py
+ml/artifacts/
+*.png
+*.txt
+*.md
+/images
 
 # Exclure les tests et docs
 Tests/
@@ -18,3 +23,5 @@ __pycache__/
 *.pyc
 .venv/
 .env
+.env.example
+.pytest_cache/
