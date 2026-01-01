@@ -2,11 +2,11 @@
 joblib 
 
 #**** backend ******
+fastapi
 SQLalchemy
 dotenv
 psycopg2-binary
 uvicorn 
-fastapi
 passlib[argon2]
 google-genai
 requests
