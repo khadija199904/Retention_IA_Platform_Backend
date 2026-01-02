@@ -2,7 +2,6 @@
 .venv
 __pycache__
 *.pyc
-pytest_cache
 .git
 .gitignore
 .pytest_cache
@@ -11,6 +10,17 @@ mlruns/
 mlflow.db
 Dockerfile
 README.md
-.git
 .env
+.env.example
+Tests/
+README.md
+.github/
+# Exclure les données lourdes
+ml/Attrition-RH-Data.csv
+ml/analyse-preparation.ipynb
+ml/artifacts/
+ml/pipeline.py
+ml/Fonctions.py
+ml/artifacts/
+*.png
 

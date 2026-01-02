@@ -13,27 +13,3 @@ Base = declarative_base()
 
 
 
-# Test connection 
-if __name__ == "__main__":
-     
-     # obtenir la session
-     def get_db():
-        db = SessionLocal()
-        try:
-             yield db
-        finally:
-          db.close()
-     
-
-     print(" Test de connexion à la base de données...")
-     print(f"DB: {DB} | User: {USER} | Host: {HOST}:{PORT}")
-     try:
-        with engine.connect() as conn:
-            conn.execute(text("SELECT 1"))
-            print(" Connexion réussie à la base de données !")
-            print("DB_URL:", DB_URL)
-
-
-     except Exception as e:
-        print(" Échec de la connexion :", e)
-     
